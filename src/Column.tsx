@@ -3,6 +3,7 @@ import AddNewItem from './AddNewItem';
 import { ColumnContainer, ColumnTitle } from './styles';
 
 export interface IColumnProps {
+	index: number;
 	text?: string;
 }
 
