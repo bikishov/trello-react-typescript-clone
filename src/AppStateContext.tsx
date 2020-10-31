@@ -1,39 +1,41 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useReducer, useContext, useEffect } from 'react';
 import { AppState } from './App';
 import { nanoid } from 'nanoid';
 import { findItemIndexById } from './utils/findItemIndexById';
 import { moveItem } from './utils/moveItem';
 import { DragItem } from './DragItem';
+import { save } from './api';
+import { withData } from './withData';
 
 type Action =
 	| {
-			type: 'SET_DRAGGED_ITEM';
-			payload: DragItem | undefined;
-		}
+		type: 'SET_DRAGGED_ITEM';
+		payload: DragItem | undefined;
+	}
 	| {
-			type: 'ADD_LIST';
-			payload: string;
-		}
+		type: 'ADD_LIST';
+		payload: string;
+	}
 	| {
-			type: 'ADD_TASK';
-			payload: { text: string; listId: string };
-		}
+		type: 'ADD_TASK';
+		payload: { text: string; listId: string };
+	}
 	| {
-			type: 'MOVE_LIST';
-			payload: {
-				dragIndex: number;
-				hoverIndex: number;
-			};
-		}
-	| {
-			type: 'MOVE_TASK';
-			payload: {
-				dragIndex: number;
-				hoverIndex: number;
-				sourceColumn: string;
-				targetColumn: string;
-			};
+		type: 'MOVE_LIST';
+		payload: {
+			dragIndex: number;
+			hoverIndex: number;
 		};
+	}
+	| {
+		type: 'MOVE_TASK';
+		payload: {
+			dragIndex: number;
+			hoverIndex: number;
+			sourceColumn: string;
+			targetColumn: string;
+		};
+	};
 
 interface AppStateContextProps {
 	state: AppState;
@@ -50,7 +52,7 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
 		case 'ADD_LIST': {
 			return {
 				...state,
-				lists: [ ...state.lists, { id: nanoid(), text: action.payload, tasks: [] } ]
+				lists: [...state.lists, { id: nanoid(), text: action.payload, tasks: [] }]
 			};
 		}
 		case 'ADD_TASK': {
@@ -85,30 +87,21 @@ const appStateReducer = (state: AppState, action: Action): AppState => {
 
 const appData: AppState = {
 	draggedItem: undefined,
-	lists: [
-		{
-			id: '0',
-			text: 'To Do',
-			tasks: [ { id: 'c0', text: 'Generate app scaffold' } ]
-		},
-		{
-			id: '1',
-			text: 'In Progress',
-			tasks: [ { id: 'c2', text: 'Learn Typescript' } ]
-		},
-		{
-			id: '2',
-			text: 'Done',
-			tasks: [ { id: 'c3', text: 'Begin to use static typing' } ]
-		}
-	]
+	lists: []
 };
 
-export const AppStateProvider = ({ children }: React.PropsWithChildren<{}>) => {
-	const [ state, dispatch ] = useReducer(appStateReducer, appData);
+export const AppStateProvider = withData(({ children, initialState }: React.PropsWithChildren<{ initialState: AppState }>) => {
+	const [state, dispatch] = useReducer(appStateReducer, initialState)
 
-	return <AppStateContext.Provider value={{ state, dispatch }}>{children}</AppStateContext.Provider>;
-};
+
+	useEffect(() => {
+		save(state)
+	}, [state])
+
+	return <AppStateContext.Provider value={{ state, dispatch }}>
+		{children}
+	</AppStateContext.Provider>
+})
 
 export const useAppState = () => {
 	return useContext(AppStateContext);
