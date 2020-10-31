@@ -7,6 +7,7 @@ export const AppContainer = styled.div`
 	flex-direction: row;
 	height: 100%;
 	padding: 20px;
+	overflow:auto;
 	width: 100%;
 `;
 
@@ -17,8 +18,8 @@ interface DragPreviewContainerProps {
 
 export const DragPreviewContainer =
 	styled.div <
-	DragPreviewContainerProps >
-	`
+		DragPreviewContainerProps >
+		`
   transform: ${(props) => (props.isPreview ? 'rotate(5deg)' : undefined)};
   opacity: ${(props) => (props.isHidden ? 0 : 1)};
 `;
@@ -46,8 +47,19 @@ export const CardContainer = styled(DragPreviewContainer)`
   padding: 0.5rem 1rem;
   max-width: 300px;
   border-radius: 3px;
-  box-shadow: #091e4240 0px 1px 0px 0px;
+	box-shadow: #091e4240 0px 1px 0px 0px;
+	word-break:break-all;
 `;
+
+export const DeleteButton = styled.div`
+	float: right;
+	color: tomato;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-width: 20px;
+`
+
 
 interface AddItemButtonProps {
 	dark?: boolean;
@@ -55,8 +67,8 @@ interface AddItemButtonProps {
 
 export const AddItemButton =
 	styled.button <
-	AddItemButtonProps >
-	`
+		AddItemButtonProps >
+		`
   background-color: #ffffff3d;
   border-radius: 3px;
   border: none;

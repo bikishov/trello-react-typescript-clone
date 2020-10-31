@@ -12,6 +12,10 @@ export type Action =
   | {
     type: 'ADD_TASK';
     payload: { text: string; listId: string };
+  } |
+  {
+    type: 'DELETE_TASK';
+    payload: { listId: string, taskId: string };
   }
   | {
     type: 'MOVE_LIST';

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { CardContainer } from '../styles/styles';
+import { CardContainer, DeleteButton } from '../styles/styles';
 import { useItemDrag } from '../hooks/useItemDrag';
 import { useDrop } from 'react-dnd';
 import { CardDragItem } from '../types/DragItem';
@@ -44,6 +44,11 @@ export const Card = ({ text, id, index, columnId, isPreview }: CardProps) => {
 	return (
 		<CardContainer isHidden={isHidden(isPreview, state.draggedItem, 'CARD', id)} isPreview={isPreview} ref={ref}>
 			{text}
-		</CardContainer>
+			<DeleteButton onClick={() => dispatch({
+				type: "DELETE_TASK", payload: {
+					listId: columnId, taskId: id
+				}
+			})} > x</DeleteButton>
+		</CardContainer >
 	);
 };

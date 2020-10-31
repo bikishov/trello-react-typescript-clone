@@ -26,6 +26,14 @@ export const appStateReducer = (state: AppState, action: Action): AppState => {
         ...state
       };
     }
+    case 'DELETE_TASK': {
+      const targetLaneIndex = findItemIndexById(state.lists, action.payload.listId);
+      const taskIndex = findItemIndexById(state.lists[targetLaneIndex].tasks, action.payload.taskId)
+      state.lists[targetLaneIndex].tasks.splice(taskIndex, 1)
+      return {
+        ...state,
+      };
+    }
     case 'MOVE_LIST': {
       const { dragIndex, hoverIndex } = action.payload;
       state.lists = moveItem(state.lists, dragIndex, hoverIndex);
