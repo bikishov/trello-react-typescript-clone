@@ -1,7 +1,7 @@
 import React from 'react';
 import { XYCoord, useDragLayer } from 'react-dnd';
 import { Column } from './Column';
-import { CustomDragLayerContainer } from './styles';
+import { CustomDragLayerContainer } from '../styles/styles';
 import { Card } from './Card';
 
 function getItemStyles(currentOffset: XYCoord | null) {

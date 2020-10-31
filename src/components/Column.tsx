@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
-import { ColumnContainer, ColumnTitle } from './styles';
-import { useAppState } from './AppStateContext';
+import { ColumnContainer, ColumnTitle } from '../styles/styles';
 import { Card } from './Card';
 import { AddNewItem } from './AddNewItem';
-import { useItemDrag } from './useItemDrag';
+import { useItemDrag } from '../hooks/useItemDrag';
 import { useDrop } from 'react-dnd';
-import { DragItem } from './DragItem';
-import { isHidden } from './utils/isHidden';
+import { DragItem } from '../types/DragItem';
+import { isHidden } from '../utils/isHidden';
+import { useAppState } from '../store/state';
 
 interface ColumnProps {
 	text: string;
@@ -18,8 +18,8 @@ interface ColumnProps {
 export const Column = ({ text, index, id, isPreview }: ColumnProps) => {
 	const { state, dispatch } = useAppState();
 	const ref = useRef<HTMLDivElement>(null);
-	const [ , drop ] = useDrop({
-		accept: [ 'COLUMN', 'CARD' ],
+	const [, drop] = useDrop({
+		accept: ['COLUMN', 'CARD'],
 		hover(item: DragItem) {
 			if (item.type === 'COLUMN') {
 				const dragIndex = item.index;

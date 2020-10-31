@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { ComponentType, PropsWithChildren } from 'react';
-import { load } from './api';
-import { AppState } from './App';
+import { load } from '../api';
+import { AppState } from '../App';
 export const withData = (WrappedComponent: ComponentType<PropsWithChildren<{ initialState: AppState }>>) => {
 
   return ({ children }: PropsWithChildren<{}>) => {

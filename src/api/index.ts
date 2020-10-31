@@ -1,4 +1,4 @@
-import { AppState } from './App';
+import { AppState } from '../App';
 
 export const save = (payload: AppState) => {
   return fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/save`, {
