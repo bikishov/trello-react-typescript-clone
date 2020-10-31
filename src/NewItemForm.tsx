@@ -6,16 +6,20 @@ interface INewItemFormProps {
 	onAdd(text: string): void;
 }
 
-const NewItemForm: React.FunctionComponent<INewItemFormProps> = ({ onAdd }) => {
+export const NewItemForm: React.FunctionComponent<INewItemFormProps> = ({ onAdd }) => {
 	const [ text, setText ] = React.useState('');
 	const inputRef = useFocus();
 
 	return (
 		<NewItemFormContainer>
-			<NewItemInput ref={inputRef} onChange={(e) => setText(e.target.value)} />
+			<NewItemInput
+				onKeyDown={(e) => {
+					if (e.key === 'Enter') onAdd(text);
+				}}
+				ref={inputRef}
+				onChange={(e) => setText(e.target.value)}
+			/>
 			<NewItemButton onClick={() => onAdd(text)}>Create</NewItemButton>
 		</NewItemFormContainer>
 	);
 };
-
-export default NewItemForm;
